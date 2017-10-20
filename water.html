@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		
+		<style>
+			*{margin: 0;padding: 0;list-style: none;}
+			.box{position: relative;margin: 0 auto;}
+			.box img{position: absolute;}       	`                                                                                   
+		</style>
+			
+	</head>
+	<body>
+		<div class="box">
+			<img src="img/temp_img01.jpg" alt="" />
+			<img src="img/temp_img02.jpg" alt="" />
+			<img src="img/temp_img03.jpg" alt="" />
+			<img src="img/temp_img04.jpg" alt="" />
+			<img src="img/temp_img05.jpg" alt="" />
+		</div>
+		<script src="jQuery-1.8.3.min.js"></script>
+		<script>
+		$(window).on("load",function(){
+
+			//大盒子宽度
+			var imgw=$('.box img').width()+10;
+			var view=Math.floor($(window) .width()/imgw)		
+			var arr=[];
+			var p=0;
+			$('.box').width(view*imgw);
+			function water(start,end){
+			for(var i=start;i<end;i++){
+				if(i<view){
+					arr.push(0);
+				}
+				var imgh=$('.box img').eq(i).height()+10;
+				var min=Math.min.apply(Math,arr);
+				var index=$.inArray(min,arr);
+				$('.box img').eq(i).stop().animate({'left':index*imgw,'top':min}); 
+				arr[index]+=imgh;
+				p++;
+			}
+			console.log(arr);
+		}
+		water(0,$('.box img').length);
+			function loading(){
+			var data={"num":[
+			{"src":"img/temp_img11.jpg"},
+			{"src":"img/temp_img12.jpg"},
+			{"src":"img/temp_img13.jpg"},
+			{"src":"img/temp_img04.jpg"},
+			{"src":"img/temp_img05.jpg"},
+			{"src":"img/temp_img06.jpg"},
+			{"src":"img/temp_img07.jpg"},
+			{"src":"img/temp_img08.jpg"},
+			{"src":"img/temp_img09.jpg"},
+		
+			]}
+			water(p,$('.box img').length);
+			var minH=Math.min.apply(Math,arr);
+			var ind=$.inArray(minH,arr);
+			$.each(data.num,function(i,val){
+//			console.log(val);
+			$("<img>").attr(val).css({"left":ind*imgw,"top":minH}).appendTo(".box");
+			})
+			
+		}	
+			$(window).on('scroll',function(){
+				var top=$(document).height()-$(window).height();
+				if($(this).scrollTop()>=top){
+					loading();
+				}
+			})
+		})
+	</script>	
+	</body>
+	
+</html>
